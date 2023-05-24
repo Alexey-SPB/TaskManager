@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 public class TodosTest {
 
 
-    SimpleTask simpleTask = new SimpleTask(5, "Позвонить родителям");
+    SimpleTask simpleTask = new SimpleTask(5, "Позвонить родителям после обеда");
 
     String[] subtasks = {"Молоко", "Яйца", "Хлеб"};
     Epic epic = new Epic(55, subtasks);
@@ -13,7 +13,7 @@ public class TodosTest {
     Meeting meeting = new Meeting(
             555,
             "Выкатка 3й версии приложения",
-            "Приложение НетоБанка",
+            "Приложение НетоБанка сделать родителям",
             "Во вторник после обеда"
     );
 
@@ -51,6 +51,30 @@ public class TodosTest {
     public void SearchTaskSimple() {
         Task[] expected = {simpleTask};
         Task[] actual = todos.search("Позвонить");
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    //Находится одна задача
+    @Test
+    public void SearchTaskOneTask() {
+        Task[] expected = {simpleTask};
+        Task[] actual = todos.search("Позвонить родителям");
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    // не находится ни одной
+    @Test
+    public void SearchTaskNoTask() {
+        Task[] expected = {};
+        Task[] actual = todos.search("Сходить в бар");
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    // находится несколько задач
+    @Test
+    public void SearchTaskSeveralTask() {
+        Task[] expected = {simpleTask, meeting};
+        Task[] actual = todos.search("родителям");
         Assertions.assertArrayEquals(expected, actual);
     }
 }
